@@ -45,9 +45,16 @@ app.get('/', (req: Request, res: Response) => {
   res.redirect('/api-docs');
 });
 
-const swaggerOptions = {
-  customCssUrl: '/public/custom.css?v=3',
-  customJs: '/public/custom.js?v=3',
+const swaggerOptions: any = {
+  customCssUrl: [
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui.min.css',
+    '/public/custom.css?v=3'
+  ],
+  customJs: [
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-bundle.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-standalone-preset.js',
+    '/public/custom.js?v=3'
+  ],
   customSiteTitle: 'Zorvyn Fintech API',
   swaggerOptions: {
     docExpansion: 'none',
