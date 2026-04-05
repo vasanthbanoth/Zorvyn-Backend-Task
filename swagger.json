@@ -1,0 +1,85 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Zorvyn Fintech API",
+    "version": "1.0.0",
+    "description": "Complete API documentation for the Zorvyn Fintech Backend."
+  },
+  "servers": [
+    { "url": "/", "description": "Current Environment (Vercel/Local)" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  },
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"], "summary": "Register a new user", "security": [],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object", "properties": { "email": { "type": "string" }, "password": { "type": "string" } } } } }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"], "summary": "Login user", "security": [],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object", "properties": { "email": { "type": "string" }, "password": { "type": "string" } } } } }
+        },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/api/users": {
+      "get": { "tags": ["Users"], "summary": "Get all users (Admin only)", "responses": { "200": { "description": "Success" } } }
+    },
+    "/api/users/{id}/role": {
+      "put": {
+        "tags": ["Users"], "summary": "Update user role (Admin)", 
+        "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "role": { "type": "string", "enum": ["VIEWER", "ANALYST", "ADMIN"] } } } } } },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/api/users/{id}/status": {
+      "put": {
+        "tags": ["Users"], "summary": "Update user status (Admin)", 
+        "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "status": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] } } } } } },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/api/users/{id}": {
+      "get": { "tags": ["Users"], "summary": "Get user by ID", "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Success" } } },
+      "delete": { "tags": ["Users"], "summary": "Delete user (Admin)", "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }], "responses": { "204": { "description": "Deleted" } } }
+    },
+    "/api/transactions": {
+      "get": { "tags": ["Transactions"], "summary": "Get all transactions", "responses": { "200": { "description": "Success" } } },
+      "post": { 
+        "tags": ["Transactions"], "summary": "Create transaction", 
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "amount": { "type": "number" }, "type": { "type": "string", "enum": ["INCOME", "EXPENSE"] }, "category": { "type": "string" }, "date": { "type": "string", "format": "date" } } } } } },
+        "responses": { "201": { "description": "Created" } } 
+      }
+    },
+    "/api/transactions/{id}": {
+      "get": { "tags": ["Transactions"], "summary": "Get single transaction", "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Success" } } },
+      "put": { 
+        "tags": ["Transactions"], "summary": "Update transaction", 
+        "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "amount": { "type": "number" }, "type": { "type": "string", "enum": ["INCOME", "EXPENSE"] }, "category": { "type": "string" } } } } } },
+        "responses": { "200": { "description": "Success" } } 
+      },
+      "delete": { "tags": ["Transactions"], "summary": "Soft delete transaction", "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }], "responses": { "204": { "description": "Deleted" } } }
+    },
+    "/api/dashboard/summary": { "get": { "tags": ["Dashboard"], "summary": "Get summary totals", "responses": { "200": { "description": "Success" } } } },
+    "/api/dashboard/category-breakdown": { "get": { "tags": ["Dashboard"], "summary": "Categorical breakdown", "responses": { "200": { "description": "Success" } } } },
+    "/api/dashboard/monthly-trends": { "get": { "tags": ["Dashboard"], "summary": "Monthly trends", "responses": { "200": { "description": "Success" } } } },
+    "/api/dashboard/recent-activity": { "get": { "tags": ["Dashboard"], "summary": "Recent activity", "responses": { "200": { "description": "Success" } } } },
+    "/api/dashboard/weekly-summary": { "get": { "tags": ["Dashboard"], "summary": "Weekly summary", "responses": { "200": { "description": "Success" } } } }
+  }
+}
